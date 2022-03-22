@@ -1,0 +1,75 @@
+class Filme{
+    private String Nome;
+    private String TituloOriginal;
+    private Date Datadelancamento;
+    private int Duracao;
+    private String Genero;
+    private String IdiomaOriginal;
+    private String Situacao;
+    private float Orcamento;
+    private String PalavrasChave;
+
+    public String getNome() {
+        return Nome;
+    }
+    public void setNome(String Nome) {
+		this.Nome = Nome;
+    }
+    public String getTituloOriginal() {
+        return TituloOriginal;
+    }
+    public void setTituloOriginal(String TituloOriginal) {
+		this.TituloOriginal = TituloOriginal;
+    }
+    public Date getDatadelancamento() {
+        return Datadelancamento;
+    }
+    public void setDatadelancamento(Date Datadelancamento) {
+		this.Datadelancamento = Datadelancamento;
+    }
+    public int getDuracao() {
+        return Duracao;
+    }
+    public void setDuracao(int Duracao) {
+		this.Duracao = Duracao;
+    }
+    public String getGenero() {
+        return Genero;
+    }
+    public void setGenero(String Genero) {
+		this.Genero = Genero;
+    }
+    public String getIdiomaOriginal() {
+        return IdiomaOriginal;
+    }
+    public void setIdiomaOriginal(String IdiomaOriginal) {
+		this.IdiomaOriginal = IdiomaOriginal;
+    }
+    public String getSituacao() {
+        return Situacao;
+    }
+    public void setSituacao(String Situacao) {
+		this.Situacao = Situacao;
+    }
+    public float getOrcamento() {
+        return Orcamento;
+    }
+    public void setOrcamento(float Orcamento) {
+		this.Orcamento = Orcamento;
+    }
+    public String getPalavrasChave() {
+        return PalavrasChave;
+    }
+    public void setPalavrasChave(String PalavrasChave) {
+		this.PalavrasChave = PalavrasChave;
+    }
+    public carro clonar(){
+        carro clonado = new carro();
+        clonado.setpotencia(potencia);
+        clonado.setmodelo(modelo);
+        return clonado;
+    }
+    public static void main(String[] args){
+        carro fuscar;
+        fusca = new carro();
+    }
