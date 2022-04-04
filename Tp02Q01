@@ -1,0 +1,256 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+class TP02Q01FilmeJava{
+   private String Nome;
+   private String TituloOriginal;
+   private Date Datadelancamento;
+   private int Duracao;
+   private String Genero;
+   private String IdiomaOriginal;
+   private String Situacao;
+   private float Orcamento;
+   private String PalavrasChave[] = new String[1];
+   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+   public String getNome() {
+       return Nome;
+   }
+   public void setNome(String Nome) {
+     this.Nome = Nome;
+   }
+   public String getTituloOriginal() {
+       return TituloOriginal;
+   }
+   public void setTituloOriginal(String TituloOriginal) {
+     this.TituloOriginal = TituloOriginal;
+   }
+   public Date getDatadelancamento() {
+       return Datadelancamento;
+   }
+   public void setDatadelancamento(Date Datadelancamento) {
+     this.Datadelancamento = Datadelancamento;
+   }
+   public int getDuracao() {
+       return Duracao;
+   }
+   public void setDuracao(int Duracao) {
+     this.Duracao = Duracao;
+   }
+   public String getGenero() {
+       return Genero;
+   }
+   public void setGenero(String Genero) {
+     this.Genero = Genero;
+   }
+   public String getIdiomaOriginal() {
+       return IdiomaOriginal;
+   }
+   public void setIdiomaOriginal(String IdiomaOriginal) {
+     this.IdiomaOriginal = IdiomaOriginal;
+   }
+   public String getSituacao() {
+       return Situacao;
+   }
+   public void setSituacao(String Situacao) {
+     this.Situacao = Situacao;
+   }
+   public float getOrcamento() {
+       return Orcamento;
+   }
+   public void setOrcamento(float Orcamento) {
+     this.Orcamento = Orcamento;
+   }
+   public String[] getPalavrasChave() {
+       return PalavrasChave;
+   }
+   public void setPalavrasChave(String[] PalavrasChave) {
+     this.PalavrasChave = PalavrasChave;
+   }
+   public TP02Q01FilmeJava (){
+
+   }
+   public TP02Q01FilmeJava (String Nome, String TituloOriginal, Date Datadelancamento, int Duracao, String Genero, String IdiomaOriginal, String Situacao, float Orcamento, String[] PalavrasChave){
+       this.Nome = Nome;
+       this.TituloOriginal = TituloOriginal;
+       this.Datadelancamento = Datadelancamento;
+       this.Duracao = Duracao;
+       this.Genero = Genero;
+       this.IdiomaOriginal = IdiomaOriginal;
+       this.Situacao = Situacao;
+       this.Orcamento = Orcamento;
+       this.PalavrasChave = PalavrasChave;
+
+   }
+   public TP02Q01FilmeJava clonar(){
+       TP02Q01FilmeJava clone = new TP02Q01FilmeJava();
+       clone.setNome(Nome);
+       clone.setTituloOriginal(TituloOriginal);
+       clone.setDatadelancamento(Datadelancamento); 
+       clone.setDuracao(Duracao);
+       clone.setGenero(Genero);
+       clone.setIdiomaOriginal(IdiomaOriginal);
+       clone.setSituacao(Situacao);
+       clone.setOrcamento(Orcamento);
+       clone.setPalavrasChave(PalavrasChave);
+       return clone;
+   }
+
+   public String imprimir(){
+       return getNome()+" "+getTituloOriginal()+" "+sdf.format(getDatadelancamento())+" "+getDuracao()+" "+getGenero()+" "+getIdiomaOriginal()+" "+getSituacao()+" "+getOrcamento()+" "+getPalavrasChave();
+   }
+
+   public String removeTags(String original){
+       String limpa = "";
+       for(int i=0;i<original.length();i++){
+           if(original.charAt(i)=='<'){
+               while(original.charAt(i)!='>')i++;
+           }
+           else{
+               limpa+=original.charAt(i);
+           }
+       }
+       return limpa;
+   }
+
+   public String buscaAteParenteses(String original){
+       String limpa = "";
+       for(int i=0;original.charAt(i)!='(';i++){
+           limpa+=original.charAt(i);
+       }
+       return limpa;
+   }
+
+   public String afterstrong(String original){
+       String limpa = "";
+       for(int i=0;i<original.length();i++){
+           if(original.charAt(i)=='<' && original.charAt(i+1) == 's' && original.charAt(i+2) == 't' && original.charAt(i+3) == 'r'){
+               while(original.charAt(i)!='>' && original.charAt(i+1)!=' ')i++;
+           }
+           else{
+               limpa+=original.charAt(i);
+           }
+       }
+       return limpa;
+   }
+
+   public int transforma(String original){
+       int duracao = 0;
+       for(int i =0;i<original.length();i++){
+           if(original.charAt(i) == 'h'){
+               if(original.charAt(i-1) == 0)
+                   duracao += (Character.getNumericValue(original.charAt(i-1))) * 60;
+               // else 
+                   // duracao += (Character.getNumericValue((original.charAt(i-2) + original.charAt(i-1)))) * 60;
+           }
+           if(original.charAt(i) == 'm')
+              duracao += (Character.getNumericValue((original.charAt(i-2)+original.charAt(i-1))));
+       }
+       return duracao;
+   }
+
+   
+   public void ler(String nomeArq) throws Exception{
+      String caminho = "/tmp/filmes/";
+      FileReader fr = new FileReader(caminho+nomeArq);
+
+      BufferedReader br = new BufferedReader(fr);
+       //Lendo primeira linha
+       String linha = br.readLine();
+       //Pulando linha até encontrar Nome
+       while(!linha.contains("<title>")){
+           linha = br.readLine();
+       }
+       //Atribuindo Nome
+       setNome(buscaAteParenteses(removeTags(linha)).trim());
+       //Pulando linha até encontrar TituloOriginal
+       while(!linha.contains("<strong>Título original")){
+           linha = br.readLine();
+       }
+       //Atribuindo TituloOriginal
+       setTituloOriginal(buscaAteParenteses(removeTags(afterstrong(linha))).trim());
+       //Pulando linha até encontrar DatadeLancamento
+       while(!linha.contains("<span class=\"release\">")){
+           linha = br.readLine();
+           linha = br.readLine();
+       }
+       //Atribuindo DatadeLancamento
+       setDatadelancamento(sdf.parse(buscaAteParenteses(linha).trim()));  
+       //Pulando linha até encontrar Duracao
+       while(!linha.contains("<span class=\"runtime\">")){
+           linha = br.readLine();
+           linha = br.readLine();
+           linha = br.readLine();
+       }
+       //Atribuindo Duracao
+       setDuracao(transforma(linha.trim()));
+       //Pulando linha até encontrar Genero
+       while(!linha.contains("<span class=\"genres\">")){
+           linha = br.readLine();
+           linha = br.readLine();
+           linha = br.readLine();
+       }
+       //Atribuindo Genero
+       setGenero(removeTags(linha).trim());
+       //Pulando linha até encontrar Idioma Original
+       while(!linha.contains("<bdi>Idioma original")){
+           linha = br.readLine();
+       }
+       //Atribuindo Idioma Original
+       setIdiomaOriginal(removeTags(afterstrong(linha)).trim());
+       //Pulando linha até encontrar Situacao
+       while(!linha.contains("<bdi>Situação")){
+           linha = br.readLine();
+       }
+       //Atribuindo Situacao
+       setSituacao(removeTags(afterstrong(linha)).trim());
+       //Pulando linha até encontrar Orcamento
+       while(!linha.contains("<bdi>Orçamento")){
+           linha = br.readLine();
+       }
+       //Atribuindo Orcamento
+       setOrcamento(Float.parseFloat(removeTags(afterstrong(linha).trim())));
+       //Pulando linha até encontrar Palavras-chave
+       while(!linha.contains("Palavras-chave")){
+           linha = br.readLine();
+       }
+       String temporario[] = new String[30];
+       int contador = 0;
+       while(!linha.contains("<ul>")){
+           linha = br.readLine();
+           if(linha.contains("<li>")){
+               temporario[contador] = removeTags(linha).trim();
+               contador++;
+           }
+       }
+       PalavrasChave = new String[contador];
+       br.close();
+   }
+
+   public static Boolean isFim(String original){
+       if(original.contains("</html>")){
+           return true;
+       }
+       return false;
+   }
+       public static void main(String[] args) throws Exception{
+          String entrada[] = new String[100];
+          int contador = 0;
+          String linha = MyIO.readLine();
+          while(isFim(linha)==false){
+              entrada[contador++]=linha;
+              linha = MyIO.readLine();
+          }
+          contador--;
+          TP02Q01FilmeJava filmes[] = new TP02Q01FilmeJava[contador];
+          for(int i=0;i<contador;i++){
+              filmes[i] = new TP02Q01FilmeJava();
+              filmes[i].ler(entrada[i]);
+          }
+          for(int i=0;i<contador;i++){
+              filmes[i].imprimir();
+          }
+       }
+    }
