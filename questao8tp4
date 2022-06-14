@@ -1,0 +1,23 @@
+import java.util.*;
+
+//Arvore binaria, e chamada na main
+
+public class questao8 {
+    public static void main(String[] args){
+        int C,N;
+        String valores= "";
+        Scanner ler= new Scanner(System.in);
+        System.out.println("C: ");
+        C=ler.nextInt();
+        for(int i=0;i<=C;i++){
+            do{
+                N=ler.nextInt();
+            }while(N < 1 || N > 500);
+            valores=ler.nextLine();
+        }
+        String[] arrayValores= valores.split(" ");
+        for(String s: arrayValores){
+            System.out.println(s);
+        }
+    }
+}
