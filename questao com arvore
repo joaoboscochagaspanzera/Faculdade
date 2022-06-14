@@ -1,0 +1,59 @@
+import java.util.*;
+
+public void inserir(No node, int valor) {
+  //verifica se a árvore já foi criada
+   if (node != null) {
+    //Verifica se o valor a ser inserido é menor que o nó corrente da árvore, se sim vai para subárvore esquerda
+    if (valor < node.valor) {
+        //Se tiver elemento no nó esquerdo continua a busca
+        if (node.esquerda != null) {
+            inserir(node.esquerda, valor);
+        } else {
+            //Se nó esquerdo vazio insere o novo nó aqui
+            System.out.println("  Inserindo " + valor + " a esquerda de " + node.valor);
+            node.esquerda = new No(valor);
+        }
+    //Verifica se o valor a ser inserido é maior que o nó corrente da árvore, se sim vai para subárvore direita
+    } else if (valor > node.valor) {
+        //Se tiver elemento no nó direito continua a busca
+        if (node.direita != null) {
+            inserir(node.direita, valor);
+        } else {
+            //Se nó direito vazio insere o novo nó aqui
+            System.out.println("  Inserindo " + valor + " a direita de " + node.valor);
+            node.direita = new No(valor);
+        }
+    }
+  }
+}
+
+public No removeValorMinimoDaArvore(No node) {
+    if (node == null) {
+        System.out.println("  ERRO ");
+    } else if (node.esquerda != null) {
+        node.esquerda = removeValorMinimoDaArvore(node.esquerda);
+        return node;
+    } else {
+      //Se não tiver elemento esquerdo só nos resta o da direita
+        return node.direita;
+    }
+    return null;
+}
+
+public static void main(String[] args){
+    Scanner leitor = new Scanner(System.in);
+    int C,N;
+    String[] arrayValores = valores.split(" ");
+    String valores;
+    C=leitor.nextInt();
+    for(int i=0;i<=C;i++){
+        do{
+            N=leitor.nextInt();
+        }while(N < 1 || N > 500)
+        valores=leitor.nextLine();
+    }
+    for(String s: arrayValores)
+    System.out.println(s);
+
+
+}
